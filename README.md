@@ -6,7 +6,7 @@
 | Aisha Ayya Ratiandari | 5027231056 |
 
 ## Topologi 2
-![Screenshot 2024-10-21 225955](https://github.com/user-attachments/assets/7554a77f-d413-44d9-bdab-7766111e8509)
+![image](https://github.com/user-attachments/assets/5c666d1f-6e19-4458-9d88-44dc505a71dc)
 
 ## Config
 
