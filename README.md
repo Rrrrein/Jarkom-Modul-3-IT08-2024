@@ -5,7 +5,7 @@
 | Irfan Qobus Salim | 5027221058 |
 | Aisha Ayya Ratiandari | 5027231056 |
 
-## Topologi 2
+## Topologi
 ![image](https://github.com/user-attachments/assets/5c666d1f-6e19-4458-9d88-44dc505a71dc)
 
 ## Config
@@ -424,7 +424,7 @@ service php7.0-fpm restart
 echo "Load balancer setup complete."
 ```
 
-Tes di client dengan 'ab -n 6000 -c 200 http://eldia.it08.com/'
+Tes di client dengan `ab -n 6000 -c 200 http://eldia.it08.com/`
 ![Screenshot 2024-10-27 224407](https://github.com/user-attachments/assets/38f1c49b-f546-44ab-b30e-0ad3e0aee493)
 ![Screenshot 2024-10-27 224940](https://github.com/user-attachments/assets/3c344a9c-e3f5-475b-b165-45e9e5a9d88a)
 ![Screenshot 2024-10-27 230813](https://github.com/user-attachments/assets/b7c65d6a-fd6c-4332-bd97-322434c1a4c2)
@@ -472,6 +472,47 @@ Berikut adalah grafiknya, RPS tertinggi berada pada saat 1 worker saja yang beke
 ![image](https://github.com/user-attachments/assets/40dfbfbf-62bc-413f-9773-f9f3bc96fa0f)
 
 Grafik ini juga dapat dilihat di dalam [pdf](https://github.com/Rrrrein/Jarkom-Modul-3-IT08-2024/blob/main/IT08_LaporanArmin.pdf).
+
+## Nomor 10
+Menjalankan script berikut untuk menambahkan username `arminannie` dan password `jrkmit08`
+
+```
+#/bin/bash
+
+mkdir /etc/nginx/supersecret
+htpasswd -c -b /etc/nginx/supersecret/.htpasswd arminannie jrkmit08
+
+rm -f /etc/nginx/sites-available/lb_php
+
+cat <<EOF >> /etc/nginx/sites-available/lb_php
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  server 192.237.2.3; # IP Eren
+  server 192.237.2.4; # IP Mikasa
+}
+
+server {
+        listen 80;
+        server_name _;
+
+        location / {
+          proxy_pass http://worker;
+          auth_basic "Restricted Access";
+          auth_basic_user_file /etc/nginx/supersecret/.htpasswd;
+        }
+}
+EOF
+
+rm -f /etc/nginx/sites-enabled/lb_php
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+service nginx restart
+```
+
+**Hasil**
+![image](https://github.com/user-attachments/assets/8d4d9ac2-39ee-407c-80ba-f1dae4e82f9a)
+![image](https://github.com/user-attachments/assets/19ebde0e-b696-4947-b03a-57daaa049d0c)
+![image](https://github.com/user-attachments/assets/e1f9c385-f30f-4de3-b6d7-1fe0ae5b7432)
 
 ## Nomor 11
 
