@@ -439,6 +439,49 @@ Tes di client dengan 'ab -n 6000 -c 200 http://eldia.it08.com/'
 ![Screenshot 2024-10-27 230813](https://github.com/user-attachments/assets/b7c65d6a-fd6c-4332-bd97-322434c1a4c2)
 ![Screenshot 2024-10-27 230824](https://github.com/user-attachments/assets/b30e641d-56c2-46fc-8704-7fdb6c079cd1)
 
+### Nomor 8
+Untuk nomor 8, kita hanya perlu menjalankan script nomor 7 namun dengan mengganti algoritma load balancernya menjadi Round Robin (default), IP Hash, Generic Hash, dan Least Connection. Pada setiap algoritmanya, kita perlu menjalankan `ab -n 1000 -c 75 http://eldia.it08.com/`. Berikut adalah grafik RPS tiap algoritma:
+
+![image](https://github.com/user-attachments/assets/e68f8e24-590e-4057-93e8-df861f12dfc0)
+
+Untuk analisis, dapat dicek di pdf yang berada di dalam repo.
+
+### Nomor 9
+Sama halnya dengan nomor 8, kita menggunakan algoritma Least Connection dengan mengurangi jumlah workernya seperti berikut ini:
+
+3 worker (default)
+```
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  server 192.237.2.3; # IP Eren
+  server 192.237.2.4; # IP Mikasa
+}
+```
+
+2 worker
+```
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  server 192.237.2.3; # IP Eren
+  # server 192.237.2.4; # IP Mikasa
+}
+```
+
+1 worker
+```
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  # server 192.237.2.3; # IP Eren
+  # server 192.237.2.4; # IP Mikasa
+}
+```
+
+Berikut adalah grafiknya, RPS tertinggi berada pada saat 1 worker saja yang bekerja.
+
+![image](https://github.com/user-attachments/assets/40dfbfbf-62bc-413f-9773-f9f3bc96fa0f)
+
+Grafik ini juga dapat dilihat di dalam pdf.
+
 ### Nomor 11
 
 Menjalankan script berikut 
