@@ -366,6 +366,78 @@ service nginx restart
 ![image](https://github.com/user-attachments/assets/f6564c31-b479-417c-af25-9ab8884aa39c)
 ![image](https://github.com/user-attachments/assets/c6a5b710-68a6-4307-bb2d-eebb40dd5a94)
 
+### Nomor 7
+
+Membuat script untuk menginstalasi dependencies dan mengonfigurasi Nginx sebagai load balancer dengan IP worker yang ditentukan
+
+```
+#!/bin/bash
+
+# Update repositories
+echo "Updating package repositories..."
+apt-get update
+
+# Install dependencies
+echo "Installing lynx, nginx, php7.0, and php-fpm..."
+apt-get install -y lynx nginx php7.0 php7.0ab -n 6000 -c 200 http://192.237.3.3/-fpm apache2-utils
+
+# Start php-fpm and nginx services
+echo "Starting php7.0-fpm and nginx services..."
+service php7.0-fpm start
+service nginx start
+
+# Define NGINX load balancer configuration
+NGINX_CONF="/etc/nginx/sites-available/load-balancer-it08.conf"
+echo "Creating nginx load balancer configuration at $NGINX_CONF..."
+
+cat <<EOL > $NGINX_CONF
+upstream worker {
+	server 192.237.2.2; # IP Armin
+	server 192.237.2.3; # IP Eren
+	server 192.237.2.4; # IP Mikasa
+}
+
+server {
+	listen 80;
+
+	root /var/www/html;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		proxy_pass http://worker;  # Mengarahkan ke grup upstream worker
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
+	}
+}
+EOL
+
+# Enable the new configuration
+echo "Creating symlink for load balancer configuration..."
+ln -s $NGINX_CONF /etc/nginx/sites-enabled/load-balancer-it08
+
+# Remove default configuration
+echo "Removing default nginx configuration..."
+rm /etc/nginx/sites-enabled/default
+
+# Restart services
+echo "Restarting nginx and php7.0-fpm services..."
+service nginx restart
+service php7.0-fpm restart
+
+echo "Load balancer setup complete."
+```
+
+Tes di client dengan 'ab -n 6000 -c 200 http://eldia.it08.com/'
+![Screenshot 2024-10-27 224407](https://github.com/user-attachments/assets/38f1c49b-f546-44ab-b30e-0ad3e0aee493)
+![Screenshot 2024-10-27 224940](https://github.com/user-attachments/assets/3c344a9c-e3f5-475b-b165-45e9e5a9d88a)
+
+
 ### Nomor 11
 
 Menjalankan script berikut 
