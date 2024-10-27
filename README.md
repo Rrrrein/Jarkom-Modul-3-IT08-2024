@@ -607,12 +607,13 @@ service nginx restart
 Di sini kami menentukan Zeke menjadi client tetapnya, setelah itu masukkan script berikut ke dalam Tybur (DHCP Server).
 
 ```
-host Dmitri {
+host Zeke {
    hardware ethernet 92:6a:4b:8f:b3:cf;
    fixed-address 192.237.1.88;
 }
 ```
 **Hasil**
+
 Jika diakses selain menggunakan client Zeke, maka Colossal tidak dapat diakses.
 
 ![image](https://github.com/user-attachments/assets/025913f9-caff-4d37-bbb0-566c79f219a8)
