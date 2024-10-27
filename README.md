@@ -9,9 +9,6 @@
 ![image](https://github.com/user-attachments/assets/5c666d1f-6e19-4458-9d88-44dc505a71dc)
 
 ## Config
-
----
-
 Config setiap node
 
 ### Paradis (DHCP Relay)
@@ -191,10 +188,7 @@ iface eth0 inet dhcp
 
 ```
 
-## No.0
-
----
-
+## Nomor 0
 Membuat script di Fritz agar domain [marley.it08.com](http://marley.it08.com) ke IP Annie dan [eldia.it08.com](http://eldia.it08.com) ke IP Armin
 
 ```markdown
@@ -263,10 +257,7 @@ echo "$granz" > /etc/bind/jarkom/eldia.it08.com
 service bind9 restart
 ```
 
-### No. 1 - 5
-
----
-
+## Nomor 1 - 5
 - Menjalankan service dari isc-dhcp-server di Tybur
 
 ```markdown
@@ -323,7 +314,7 @@ Test pada client
 ![Screenshot 2024-10-27 212306](https://github.com/user-attachments/assets/d7ba0b1d-bc32-4077-b8fe-6a0971e93db0)
 ![Screenshot 2024-10-27 212356](https://github.com/user-attachments/assets/1b270234-e03c-4cc9-9f3c-44592b1537df)
 
-### Nomor 6
+## Nomor 6
 
 Menjalankan script di bawah ini kepada node PHP Worker (Armin, Eren, Mikasa) dan mengeceknya menggunakan `lynx localhost`.
 
@@ -366,7 +357,7 @@ service nginx restart
 ![image](https://github.com/user-attachments/assets/f6564c31-b479-417c-af25-9ab8884aa39c)
 ![image](https://github.com/user-attachments/assets/c6a5b710-68a6-4307-bb2d-eebb40dd5a94)
 
-### Nomor 7
+## Nomor 7
 
 Membuat script untuk menginstalasi dependencies dan mengonfigurasi Nginx sebagai load balancer dengan IP worker yang ditentukan
 
@@ -439,14 +430,14 @@ Tes di client dengan 'ab -n 6000 -c 200 http://eldia.it08.com/'
 ![Screenshot 2024-10-27 230813](https://github.com/user-attachments/assets/b7c65d6a-fd6c-4332-bd97-322434c1a4c2)
 ![Screenshot 2024-10-27 230824](https://github.com/user-attachments/assets/b30e641d-56c2-46fc-8704-7fdb6c079cd1)
 
-### Nomor 8
+## Nomor 8
 Untuk nomor 8, kita hanya perlu menjalankan script nomor 7 namun dengan mengganti algoritma load balancernya menjadi Round Robin (default), IP Hash, Generic Hash, dan Least Connection. Pada setiap algoritmanya, kita perlu menjalankan `ab -n 1000 -c 75 http://eldia.it08.com/`. Berikut adalah grafik RPS tiap algoritma:
 
 ![image](https://github.com/user-attachments/assets/e68f8e24-590e-4057-93e8-df861f12dfc0)
 
-Untuk analisis, dapat dicek di pdf yang berada di dalam repo.
+Untuk analisis, dapat dicek di [pdf](https://github.com/Rrrrein/Jarkom-Modul-3-IT08-2024/blob/main/IT08_LaporanArmin.pdf) yang berada di dalam repo.
 
-### Nomor 9
+## Nomor 9
 Sama halnya dengan nomor 8, kita menggunakan algoritma Least Connection dengan mengurangi jumlah workernya seperti berikut ini:
 
 3 worker (default)
@@ -480,9 +471,9 @@ Berikut adalah grafiknya, RPS tertinggi berada pada saat 1 worker saja yang beke
 
 ![image](https://github.com/user-attachments/assets/40dfbfbf-62bc-413f-9773-f9f3bc96fa0f)
 
-Grafik ini juga dapat dilihat di dalam pdf.
+Grafik ini juga dapat dilihat di dalam [pdf](https://github.com/Rrrrein/Jarkom-Modul-3-IT08-2024/blob/main/IT08_LaporanArmin.pdf).
 
-### Nomor 11
+## Nomor 11
 
 Menjalankan script berikut 
 
@@ -526,7 +517,7 @@ ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
 service nginx restart
 ```
 
-### Nomor 12
+## Nomor 12
 
 Menjalankan script berikut
 
@@ -575,7 +566,7 @@ ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
 service nginx restart
 ```
 
-### Nomor 13
+## Nomor 13
 
 Menjalankan script berikut
 
