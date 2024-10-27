@@ -450,3 +450,133 @@ rm /etc/nginx/sites-enabled/default
 service nginx restart
 ```
 
+### Nomor 11
+
+Menjalankan script berikut 
+
+```
+#!/bin/bash
+
+cat <<EOF >> /etc/nginx/sites-available/lb_php
+upstream worker-aot {
+    server 192.237.2.2;
+    server 192.237.2.3;
+    server 192.237.2.4;
+}
+
+server {
+    listen 80;
+    server_name eldia.it08.com www.eldia.it08.com;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    location / {
+        proxy_pass http://worker-aot;
+    }
+
+    location /titan {
+        proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+}
+EOF
+
+rm -f /etc/nginx/sites-enabled/lb_php
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+service nginx restart
+```
+
+### Nomor 12
+
+Menjalankan script berikut
+
+```
+#!/bin/bash
+
+cat <<EOF >> /etc/nginx/sites-available/lb_php
+upstream worker-aot {
+    server 192.237.2.2;
+    server 192.237.2.3;
+    server 192.237.2.4;
+}
+
+server {
+    listen 80;
+    server_name eldia.it08.com www.eldia.it08.com;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    location / {
+        allow 192.237.1.77;
+        allow 192.237.1.88;
+        allow 192.237.2.144;
+        allow 192.237.2.156;
+        deny all;
+        proxy_pass http://worker-aot;
+    }
+
+    location /dune {
+        proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+}
+EOF
+
+rm -f /etc/nginx/sites-enabled/lb_php
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+service nginx restart
+```
+
+### Nomor 13
+
+Menjalankan script berikut
+
+```
+#!/bin/bash
+
+cat <<EOF >> /etc/mysql/my.cnf
+# This group is read both by the client and the server
+# use it for options that affect everything
+[client-server]
+
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/
+
+# Options affecting the MySQL server (mysqld)
+[mysqld]
+skip-networking=0
+skip-bind-address
+EOF
+```
+Selanjutnya, jalankan command ini di terminal node Warhammer
+
+```
+mysql -u root -p
+Enter password: (kosongkan password, langsung enter)
+
+CREATE USER 'it08'@'%' IDENTIFIED BY 'it08';
+CREATE USER 'it08'@'localhost' IDENTIFIED BY 'it08';
+CREATE DATABASE db_it08;
+GRANT ALL PRIVILEGES ON *.* TO 'it08'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'it08'@'localhost';
+FLUSH PRIVILEGES;
+
+mariadb --host=192.237.3.2 --port=3306 --user=it08 --password=it08 db_it08 -e "SHOW DATABASES;"
+```
