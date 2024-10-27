@@ -410,3 +410,43 @@ subnet 192.237.2.0 netmask 255.255.255.0 {
 
 service isc-dhcp-server restart
 ```
+
+### Nomor 6
+
+Menjalankan script di bawah ini kepada node PHP Worker (Armin, Eren, Mikasa) dan mengeceknya menggunakan `lynx localhost`.
+
+```
+#/bin/bash
+
+wget 'https://drive.usercontent.google.com/u/0/uc?id=1RCy_7ptfsGXQ8_HJ8-28tts1a3EpnBlQ&export=download' -O modul3.zip
+unzip modul3.zip
+mkdir -p /var/www/eldia
+mv modul-3/* /var/www/eldia
+
+cat <<EOF >> /etc/nginx/sites-available/eldia.it08.com
+server {
+     listen 80;
+     server_name _;
+
+     root /var/www/eldia;
+     index index.php index.html index.htm;
+
+     location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }
+
+     location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+     }
+}
+EOF
+
+ln -s /etc/nginx/sites-available/eldia.it08.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
