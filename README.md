@@ -361,6 +361,9 @@ rm /etc/nginx/sites-enabled/default
 
 service nginx restart
 ```
+**Hasil**
+![image](https://github.com/user-attachments/assets/2d39ecb6-d9c0-4420-8220-31b20bd49a0d)
+
 
 ### Nomor 11
 
