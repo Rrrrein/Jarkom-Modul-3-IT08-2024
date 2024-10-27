@@ -436,7 +436,8 @@ echo "Load balancer setup complete."
 Tes di client dengan 'ab -n 6000 -c 200 http://eldia.it08.com/'
 ![Screenshot 2024-10-27 224407](https://github.com/user-attachments/assets/38f1c49b-f546-44ab-b30e-0ad3e0aee493)
 ![Screenshot 2024-10-27 224940](https://github.com/user-attachments/assets/3c344a9c-e3f5-475b-b165-45e9e5a9d88a)
-
+![Screenshot 2024-10-27 230813](https://github.com/user-attachments/assets/b7c65d6a-fd6c-4332-bd97-322434c1a4c2)
+![Screenshot 2024-10-27 230824](https://github.com/user-attachments/assets/b30e641d-56c2-46fc-8704-7fdb6c079cd1)
 
 ### Nomor 11
 
