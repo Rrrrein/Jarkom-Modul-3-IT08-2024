@@ -363,7 +363,8 @@ service nginx restart
 ```
 **Hasil**
 ![image](https://github.com/user-attachments/assets/2d39ecb6-d9c0-4420-8220-31b20bd49a0d)
-
+![image](https://github.com/user-attachments/assets/f6564c31-b479-417c-af25-9ab8884aa39c)
+![image](https://github.com/user-attachments/assets/c6a5b710-68a6-4307-bb2d-eebb40dd5a94)
 
 ### Nomor 11
 
