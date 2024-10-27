@@ -516,13 +516,15 @@ service nginx restart
 
 ## Nomor 11
 
-Menjalankan script berikut 
+Menjalankan script berikut dan test menggunakan `lynx eldia.it08.com/titan`.
 
 ```
 #!/bin/bash
 
+rm -f /etc/nginx/sites-available/lb_php
+
 cat <<EOF >> /etc/nginx/sites-available/lb_php
-upstream worker-aot {
+upstream worker {
     server 192.237.2.2;
     server 192.237.2.3;
     server 192.237.2.4;
@@ -530,25 +532,21 @@ upstream worker-aot {
 
 server {
     listen 80;
-    server_name eldia.it08.com www.eldia.it08.com;
-
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
+    server_name _;
 
     location / {
-        proxy_pass http://worker-aot;
+        proxy_pass http://worker;
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/supersecret/.htpasswd;
     }
 
     location /titan {
         proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
         proxy_set_header Host attackontitan.fandom.com;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
     }
-
-    auth_basic "Restricted Content";
-    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
 }
 EOF
 
@@ -558,15 +556,20 @@ ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
 service nginx restart
 ```
 
+**Hasil**
+![image](https://github.com/user-attachments/assets/ef2c4085-bf9f-45dc-ac34-0cd77adfaf61)
+
 ## Nomor 12
 
-Menjalankan script berikut
+Menjalankan script berikut agar dapat diakses dengan IP khusus.
 
 ```
 #!/bin/bash
 
+rm -f /etc/nginx/sites-available/lb_php
+
 cat <<EOF >> /etc/nginx/sites-available/lb_php
-upstream worker-aot {
+upstream worker {
     server 192.237.2.2;
     server 192.237.2.3;
     server 192.237.2.4;
@@ -574,10 +577,7 @@ upstream worker-aot {
 
 server {
     listen 80;
-    server_name eldia.it08.com www.eldia.it08.com;
-
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
+    server_name _;
 
     location / {
         allow 192.237.1.77;
@@ -585,19 +585,18 @@ server {
         allow 192.237.2.144;
         allow 192.237.2.156;
         deny all;
-        proxy_pass http://worker-aot;
+        proxy_pass http://worker;
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/supersecret/.htpasswd;
     }
 
-    location /dune {
+    location /titan {
         proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
         proxy_set_header Host attackontitan.fandom.com;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
     }
-
-    auth_basic "Restricted Content";
-    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
 }
 EOF
 
@@ -607,40 +606,45 @@ ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
 service nginx restart
 ```
 
+Di sini kami menentukan Zeke menjadi client tetapnya, setelah itu masukkan script berikut ke dalam Tybur (DHCP Server).
+
+```
+host Dmitri {
+   hardware ethernet 92:6a:4b:8f:b3:cf;
+   fixed-address 192.237.1.88;
+}
+```
+**Hasil**
+Jika diakses selain menggunakan client Zeke, maka Colossal tidak dapat diakses.
+
+![image](https://github.com/user-attachments/assets/025913f9-caff-4d37-bbb0-566c79f219a8)
+
+
 ## Nomor 13
 
-Menjalankan script berikut
+Menjalankan script berikut pada node Warhammer.
 
 ```
 #!/bin/bash
 
 cat <<EOF >> /etc/mysql/my.cnf
-# This group is read both by the client and the server
-# use it for options that affect everything
-[client-server]
-
-# Import all .cnf files from configuration directory
-!includedir /etc/mysql/conf.d/
-!includedir /etc/mysql/mariadb.conf.d/
-
-# Options affecting the MySQL server (mysqld)
 [mysqld]
 skip-networking=0
 skip-bind-address
 EOF
-```
-Selanjutnya, jalankan command ini di terminal node Warhammer
 
-```
-mysql -u root -p
-Enter password: (kosongkan password, langsung enter)
+mysql -e "CREATE USER 'it08'@'%' IDENTIFIED BY 'it08';"
+mysql -e "CREATE USER 'it08'@'marley.it08.com' IDENTIFIED BY 'it08';"
+mysql -e "CREATE DATABASE db_it08;"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'it08'@'%';"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'it08'@'marley.it08.com';"
+mysql -e "FLUSH PRIVILEGES;"
 
-CREATE USER 'it08'@'%' IDENTIFIED BY 'it08';
-CREATE USER 'it08'@'localhost' IDENTIFIED BY 'it08';
-CREATE DATABASE db_it08;
-GRANT ALL PRIVILEGES ON *.* TO 'it08'@'%';
-GRANT ALL PRIVILEGES ON *.* TO 'it08'@'localhost';
-FLUSH PRIVILEGES;
-
-mariadb --host=192.237.3.2 --port=3306 --user=it08 --password=it08 db_it08 -e "SHOW DATABASES;"
+service mysql restart
 ```
+
+Kemudian test pada worker Laravel (Annie, Bertholdt, Reiner) dengan perintah `mariadb --host=192.237.3.2 --port=3306 --user=it08 --password=it08 db_it08 -e "SHOW DATABASES;"`
+
+**Hasil**
+![image](https://github.com/user-attachments/assets/8bf6c70a-5df6-443a-b12a-b35ca3fefb1e)
+
