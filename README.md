@@ -645,5 +645,6 @@ service mysql restart
 Kemudian test pada worker Laravel (Annie, Bertholdt, Reiner) dengan perintah `mariadb --host=192.237.3.2 --port=3306 --user=it08 --password=it08 db_it08 -e "SHOW DATABASES;"`
 
 **Hasil**
+
 ![image](https://github.com/user-attachments/assets/8bf6c70a-5df6-443a-b12a-b35ca3fefb1e)
 
