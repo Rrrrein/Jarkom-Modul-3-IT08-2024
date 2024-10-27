@@ -19,40 +19,38 @@ Config setiap node
 ```markdown
 auto eth0
 iface eth0 inet dhcp
+up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.237.0.0/16
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 auto eth1
 iface eth1 inet static
-	address 192.237.1.0
+	address 192.237.1.1
 	netmask 255.255.255.0
 
 auto eth2
 iface eth2 inet static
-	address 192.237.2.0
+	address 192.237.2.1
 	netmask 255.255.255.0
 
 auto eth3
 iface eth3 inet static
-	address 192.237.3.0
+	address 192.237.3.1
 	netmask 255.255.255.0
 
 auto eth4
 iface eth4 inet static
-	address 192.237.4.0
+	address 192.237.4.1
 	netmask 255.255.255.0
-
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.237.0.0/16
-
 ```
 
 ### Tybur (DHCP Server)
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.4.2
-  netmask 255.255.255.0
-  gateway 192.237.4.0
-
+iface eth0 inet static
+address 192.237.4.2
+netmask 255.255.255.0
+gateway 192.237.4.1
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -60,11 +58,10 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.4.1
-  netmask 255.255.255.0
-  gateway 192.237.4.0
-
+iface eth0 inet static
+address 192.237.4.3
+netmask 255.255.255.0
+gateway 192.237.4.1
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -72,11 +69,11 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.3.3
-  netmask 255.255.255.0
-  gateway 192.237.3.0
-
+iface eth0 inet static
+address 192.237.3.2
+netmask 255.255.255.0
+gateway 192.237.3.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -84,23 +81,24 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.3.1
-  netmask 255.255.255.0
-  gateway 192.237.3.0
-
+iface eth0 inet static
+address 192.237.3.4
+netmask 255.255.255.0
+gateway 192.237.3.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
 ```
 
 ### Colossal (LoadBalancer PHP)
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.3.2
-  netmask 255.255.255.0
-  gateway 192.237.3.0
-
+iface eth0 inet static
+address 192.237.3.3
+netmask 255.255.255.0
+gateway 192.237.3.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -108,35 +106,37 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.1.1
-  netmask 255.255.255.0
-  gateway 192.237.1.0
-
+iface eth0 inet static
+address 192.237.1.2
+netmask 255.255.255.0
+gateway 192.237.1.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
 ```
 
 ### Bertholdt (Laravel Worker)
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.1.2
-  netmask 255.255.255.0
-  gateway 192.237.1.0
-
+iface eth0 inet static
+address 192.237.1.3
+netmask 255.255.255.0
+gateway 192.237.1.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
 ```
 
 ### Reiner (Laravel Worker)
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.1.3
-  netmask 255.255.255.0
-  gateway 192.237.1.0
-
+iface eth0 inet static
+address 192.237.1.4
+netmask 255.255.255.0
+gateway 192.237.1.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -144,11 +144,11 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.2.1
-  netmask 255.255.255.0
-  gateway 192.237.2.0
-
+iface eth0 inet static
+address 192.237.2.2
+netmask 255.255.255.0
+gateway 192.237.2.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -156,11 +156,11 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.2.2
-  netmask 255.255.255.0
-  gateway 192.237.2.0
-
+iface eth0 inet static
+address 192.237.2.3
+netmask 255.255.255.0
+gateway 192.237.2.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -168,11 +168,11 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.2.3
-  netmask 255.255.255.0
-  gateway 192.237.2.0
-
+iface eth0 inet static
+address 192.237.2.4
+netmask 255.255.255.0
+gateway 192.237.2.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
 up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
@@ -180,89 +180,14 @@ up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.1.4
-  netmask 255.255.255.0
-  gateway 192.237.1.0
-
-up echo nameserver 192.237.4.1 > /etc/resolv.conf
-up echo nameserver 192.168.122.1 >> /etc/resolv.conf
+iface eth0 inet dhcp
 ```
 
 ### Erwin (Client)
 
 ```markdown
 auto eth0
-iface  eth0 inet static
-  address 192.237.2.4
-  netmask 255.255.255.0
-  gateway 192.237.2.0
-
-up echo nameserver 192.237.4.1 > /etc/resolv.conf
-up echo nameserver 192.168.122.1 >> /etc/resolv.conf
-
-```
-
-### Instalasi Dependensi
-
----
-
-di nano /root/.bashrc per nodenya
-
-**Paradis (DHCP Relay)**
-
-```
-apt-get update
-apt-get install isc-dhcp-relay -y
-
-```
-
-**Tybur (DHCP Server)**
-
-```
-apt-get update
-apt-get install isc-dhcp-server -y
-
-```
-
-**Fritz (DNS Server)**
-
-```
-apt-get update
-apt-get install bind9 -y
-
-```
-
-**Beast dan Colossal (Load Balancer)**
-
-```
-apt-get update
-apt-get install apache2-utils -y
-apt-get install nginx -y
-apt-get install lynx -y
-
-```
-
-**Warhammer (Database Server)**
-
-```
-apt-get update
-apt-get install mariadb-server -y
-
-```
-
-**Annie, Bertholdt, Reiner (Laravel Worker)**
-
-**Armin, Eren, Mikasa (PHP Worker)**
-
-**Zeke dan Erwin (Client)**
-
-```
-apt-get update
-apt-get install lynx -y
-apt-get install htop -y
-apt-get install apache2-utils -y
-apt-get install jq -y
+iface eth0 inet dhcp
 
 ```
 
@@ -314,7 +239,7 @@ riegel="
                 604800 )    ; Negative Cache TTL
 ;                   
 @    IN    NS    marley.it08.com.
-@       IN    A    192.237.1.1
+@       IN    A    192.237.1.2
 "
 echo "$riegel" > /etc/bind/jarkom/marley.it08.com
 
@@ -331,49 +256,32 @@ granz="
                 604800 )    ; Negative Cache TTL
 ;                   
 @    IN    NS    eldia.it08.com.
-@       IN    A    192.237.2.1
+@       IN    A    192.237.2.2
 "
 echo "$granz" > /etc/bind/jarkom/eldia.it08.com
 
 service bind9 restart
 ```
 
-Test di client Zeke dan Erwin
-
-![image.png](image%203.png)
-
-![image.png](image%204.png)
-
-![image.png](image%205.png)
-
-![image.png](image%206.png)
-
 ### No. 1 - 5
 
 ---
 
-Membuat script untuk menghubungkan Paradis ke Tybur
+- Menjalankan service dari isc-dhcp-server di Tybur
 
 ```markdown
-apt-get update
-apt-get install isc-dhcp-relay -y
-service isc-dhcp-relay start
-
-relay="SERVERS=\"191.237.4.2\"
-INTERFACES=\"eth1 eth2 eth3 eth4\"
-OPTIONS=\"\"
-"
-echo "$relay" > /etc/default/isc-dhcp-relay
-
-echo net.ipv4.ip_forward=1 > /etc/sysctl.conf
-
-service isc-dhcp-relay restart
+service isc-dhcp-server start
 ```
 
-lalu menghubungkan Tybur untuk setup subnet Marley
+- Menambahkan line berikut pada file /etc/default/isc-dhcp-server di Tybur
 
 ```markdown
+INTERFACES="eth0"
+```
 
+- Membuat script untuk menghubungkan Paradis ke Tybur
+
+```markdown
 echo INTERFACESv4="eth0" > /etc/default/isc-dhcp-server
 
 echo 'authoritative;
@@ -410,6 +318,10 @@ subnet 192.237.2.0 netmask 255.255.255.0 {
 
 service isc-dhcp-server restart
 ```
+
+Test pada client
+![Screenshot 2024-10-27 212306](https://github.com/user-attachments/assets/d7ba0b1d-bc32-4077-b8fe-6a0971e93db0)
+![Screenshot 2024-10-27 212356](https://github.com/user-attachments/assets/1b270234-e03c-4cc9-9f3c-44592b1537df)
 
 ### Nomor 6
 
